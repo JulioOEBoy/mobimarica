@@ -1,0 +1,70 @@
+digraph CorridasApp {
+  graph [label="Diagrama ER - CorridasApp (Sistema similar ao Uber)", labelloc=t, fontsize=16, fontname='DejaVu Sans', bgcolor='#fafafa'];
+  node [fontname='DejaVu Sans', fontsize=10, style=filled];
+  edge  [fontname='DejaVu Sans', fontsize=8, arrowsize=0.5, color="#333333", fontname="DejaVu Sans"];
+  "aplicativo" [box, filled, fillcolor="#4A90D9", fontcolor="white", URL="schema_corridasapp.sql", target="_blank", label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr ALIGN="CENTER"><td COLSPAN="2"><b><font color="#4A90D9">aplicativo</font></b></td></tr>
+    <tr><td><b>id_aplicativo</b></td><td align="left">serial PK</td></tr>
+    <tr><td><b>nome_aplicativo</b></td><td align="left">VARCHAR(100)</td></tr>
+    <tr><td><b>descricao</b></td><td align="left">TEXT</td></tr>
+    <tr><td><b>url_logo</b></td><td align="left">VARCHAR(255)</td></tr>
+    <tr><td><b>cnpj_aplicativo</b></td><td align="left">VARCHAR(18)</td></tr>
+    <tr><td><b>created_at</b></td><td align="left">TIMESTAMPTZ</td></tr>
+    <tr><td><b>updated_at</b></td><td align="left">TIMESTAMPTZ</td></tr>
+   </table>>];
+  "usuario" [box, filled, fillcolor="#50B850", fontcolor="white", URL="schema_corridasapp.sql", target="_blank", label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr ALIGN="CENTER"><td COLSPAN="2"><b><font color="#50B850">usuario</font></b></td></tr>
+    <tr><td><b>id_usuario</b></td><td align="left">serial PK</td></tr>
+    <tr><td><b>nome</b></td><td align="left">VARCHAR(100)</td></tr>
+    <tr><td><b>email</b></td><td align="left">VARCHAR(150) UNIQUE</td></tr>
+    <tr><td><b>telefone</b></td><td align="left">VARCHAR(20)</td></tr>
+    <tr><td><b>cpf</b></td><td align="left">VARCHAR(14) UNIQUE</td></tr>
+    <tr><td><b>reputacao</b></td><td align="left">DECIMAL(3,2) DEFAULT 0</td></tr>
+    <tr><td><b>qtd_corrida</b></td><td align="left">INTEGER DEFAULT 0</td></tr>
+    <tr><td><b>tipo_conta</b></td><td align="left">VARCHAR(20)</td></tr>
+    <tr><td><b>created_at</b></td><td align="left">TIMESTAMPTZ</td></tr>
+   </table>>];
+  "motorista" [box, filled, fillcolor="#D9824A", fontcolor="white", URL="schema_corridasapp.sql", target="_blank", label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr ALIGN="CENTER"><td COLSPAN="2"><b><font color="#D9824A">motorista</font></b></td></tr>
+    <tr><td><b>id_motorista</b></td><td align="left">serial PK</td></tr>
+    <tr><td><b>id_usuario</b></td><td align="left">FK -> usuario</td></tr>
+    <tr><td><b>id_aplicativo</b></td><td align="left">FK -> aplicativo</td></tr>
+    <tr><td><b>placa_veiculo</b></td><td align="left">VARCHAR(10)</td></tr>
+    <tr><td><b>reputacao</b></td><td align="left">DECIMAL(3,2) DEFAULT 0</td></tr>
+    <tr><td><b>qtd_corrida</b></td><td align="left">INTEGER DEFAULT 0</td></tr>
+    <tr><td><b>receita_total</b></td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td><b>aprovado</b></td><td align="left">BOOLEAN DEFAULT FALSE</td></tr>
+    <tr><td><b>disponivel</b></td><td align="left">BOOLEAN DEFAULT TRUE</td></tr>
+    <tr><td><b>created_at</b></td><td align="left">TIMESTAMPTZ</td></tr>
+   </table>>];
+  "pedido" [box, filled, fillcolor="#D9A44A", fontcolor="white", URL="schema_corridasapp.sql", target="_blank", label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr ALIGN="CENTER"><td COLSPAN="2"><b><font color="#D9A44A">pedido</font></b></td></tr>
+    <tr><td><b>id_pedido</b></td><td align="left">serial PK</td></tr>
+    <tr><td><b>id_usuario</b></td><td align="left">FK -> usuario</td></tr>
+    <tr><td><b>id_motorista</b></td><td align="left">FK -> motorista</td></tr>
+    <tr><td><b>id_aplicativo</b></td><td align="left">FK -> aplicativo</td></tr>
+    <tr><td><b>origem_lat/lon</b></td><td align="left">DECIMAL(10,8)</td></tr>
+    <tr><td><b>destino_lat/lon</b></td><td align="left">DECIMAL(11,8)</td></tr>
+    <tr><td><b>preco_pago</b></td><td align="left">NUMERIC(10,2)</td></tr>
+    <tr><td><b>status</b></td><td align="left">VARCHAR(30)</td></tr>
+    <tr><td><b>data_corrida</b></td><td align="left">TIMESTAMPTZ</td></tr>
+   </table>>];
+  "avaliacao" [box, filled, fillcolor="#824AD9", fontcolor="white", URL="schema_corridasapp.sql", target="_blank", label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr ALIGN="CENTER"><td COLSPAN="2"><b><font color="#824AD9">avaliacao</font></b></td></tr>
+    <tr><td><b>id_avaliacao</b></td><td align="left">serial PK</td></tr>
+    <tr><td><b>id_pedido</b></td><td align="left">FK -> pedido</td></tr>
+    <tr><td><b>id_usuario</b></td><td align="left">FK -> usuario</td></tr>
+    <tr><td><b>id_motorista</b></td><td align="left">FK -> motorista</td></tr>
+    <tr><td><b>nota</b></td><td align="left">DECIMAL(2,1) CHECK(0..5)</td></tr>
+    <tr><td><b>data_avaliacao</b></td><td align="left">TIMESTAMPTZ</td></tr>
+    <tr><td><b>confirmada</b></td><td align="left">BOOLEAN DEFAULT FALSE</td></tr>
+   </table>>];
+  "aplicativo" -> "motorista" [label="1:N"];
+  "motorista" -> "usuario" [label="1:1 (usuario = motorista)"];
+  "pedido" -> "aplicativo" [label="1:N"];
+  "pedido" -> "usuario" [label="1:N"];
+  "pedido" -> "motorista" [label="1:1"];
+  "avaliacao" -> "pedido" [label="1:N"];
+  "avaliacao" -> "motorista" [label="1:N"];
+  "avaliacao" -> "usuario" [label="1:N (usuario avalia)"];
+}
