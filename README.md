@@ -1,6 +1,3 @@
-# CorridasApp
-![Diagrama do Banco de Dados](diagrama/corridasapp_diagrama.svg)
-
 ## 📋 Projeto
 Sistema similar ao Uber focando na relação de **Aplicativo ↔ Usuário ↔ Motorista**, 
 com dados de personalidade, reputação, quantidade de corridas e etc. 
